@@ -16,6 +16,12 @@ const HomePage: FC = () => {
             className='px-4 py-3 border-2 font-bold rounded-[8px] max-w-xs'>
             Click me
           </button>
+
+          <p data-testid='info'>Informationtext</p>
+          <p className='text-lg'>LargeText 🤯</p>
+          <p id='danger' className='hidden'>
+            Danger!!!
+          </p>
         </main>
         <footer className='flex gap-6 flex-wrap justify-center'>
           <a
@@ -24,7 +30,7 @@ const HomePage: FC = () => {
             target='_blank'
             rel='noopener noreferrer'>
             <Image aria-hidden src='/globe.svg' alt='Globe icon' width={16} height={16} />
-            Go to nextjs.org XX →
+            Go to nextjs.org →
           </a>
         </footer>
       </div>

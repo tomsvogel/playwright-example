@@ -9,7 +9,7 @@
     "lint": "next lint",
     "test:e2e": "npx playwright test --ui",
     "test:report-e2e": "npx playwright show-report",
-    "test:update-e2e": "npx playwright test -u --project \"e2e-tests\"",
+    "test:update-e2e": "npx playwright test -u --project \"chromium\"",
     "test:components": "vitest"
   },
   "dependencies": {

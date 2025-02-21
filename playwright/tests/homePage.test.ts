@@ -22,3 +22,18 @@ test('button navigates to subpage succeeds', async ({page}) => {
   const heading = page.getByText('Welcome to Our App');
   await expect(heading).toBeAttached();
 });
+
+test('different locators', async ({page}) => {
+  await page.goto('/');
+  await page.waitForURL('/');
+
+  const info = page.getByTestId('info');
+  await expect(info).toBeAttached();
+
+  const largeText = page.locator('.text-lg').first();
+  await expect(largeText).toBeAttached();
+
+  const danger = page.locator('#danger').first();
+  await expect(danger).toBeAttached();
+  expect(await danger.isVisible()).toBe(false);
+});
