@@ -1,39 +1,44 @@
-import {defineConfig, devices} from 'playwright/test';
+import {defineConfig, devices} from '@playwright/test';
 
-const baseURL = 'http://localhost:3000';
+const baseURL = 'http://127.0.0.1:3000';
 
 export default defineConfig({
-  testDir: './playwright',
-  outputDir: './playwright/output',
-  snapshotDir: './playwright/output',
+  // Look for test files in the "tests" directory, relative to this configuration file.
+  testDir: 'playwright',
+  snapshotDir: 'playwright/snapshots',
+  // Run all tests in parallel.
   fullyParallel: false,
-  retries: 1,
-  workers: 1,
+
+  // Fail the build on CI if you accidentally left test.only in the source code.
+  forbidOnly: !!process.env.CI,
+
+  // Retry on CI only.
+  retries: process.env.CI ? 2 : 0,
+
+  // Opt out of parallel tests on CI.
+  workers: process.env.CI ? 1 : undefined,
+
+  // Reporter to use
   reporter: 'html',
+
   use: {
-    ...devices['Desktop Chrome'],
-    baseURL,
-    screenshot: {mode: 'on'},
-    video: {mode: 'on'},
-    testIdAttribute: 'test-id',
+    // Base URL to use in actions like `await page.goto('/')`.
+    baseURL: baseURL,
+
+    // Collect trace when retrying the failed test.
+    trace: 'on-first-retry',
   },
+  // Configure projects for major browsers.
   projects: [
     {
-      name: 'e2e-tests',
-      testDir: './playwright',
-      testMatch: 'tests/*.@(spec|test).?(c|m)[jt]s?(x)',
-      timeout: 120 * 1000,
-      fullyParallel: false,
-    },
-    {
-      name: 'default',
-      use: {
-        ...devices['Desktop Chrome'],
-      },
-      testDir: './app',
-      timeout: 30 * 1000,
-      fullyParallel: true,
-      dependencies: ['e2e-tests'],
+      name: 'chromium',
+      use: {...devices['Desktop Chrome']},
     },
   ],
+  // Run your local dev server before starting the tests.
+  webServer: {
+    command: 'npm run dev',
+    url: 'http://127.0.0.1:3000',
+    reuseExistingServer: !process.env.CI,
+  },
 });
